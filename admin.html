@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access | HR Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy: #0f172a; --red: #C41230; --blue: #002d72; --light-bg: #f8fafc; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--light-bg); margin: 0; padding: 20px; color: var(--navy); }
+        
+        /* LOGIN OVERLAY */
+        #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--navy); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-card { background: white; padding: 40px; border-radius: 12px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); width: 320px; }
+        .login-card h3 { margin-top: 0; color: var(--navy); }
+        .pin-input { width: 100%; padding: 15px; font-size: 24px; text-align: center; letter-spacing: 10px; border: 2px solid var(--border); border-radius: 8px; margin-bottom: 20px; box-sizing: border-box; }
+        
+        /* ADMIN PANEL */
+        #adminDashboard { display: none; }
+        .admin-wrapper { max-width: 1100px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 5px solid var(--red); }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        
+        .entry-panel { display: grid; grid-template-columns: 2fr 2fr 1fr auto; gap: 15px; background: #f1f5f9; padding: 25px; border-radius: 8px; margin-bottom: 40px; }
+        input, select { padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; }
+        
+        .btn-action { background: var(--blue); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-action:hover { background: var(--navy); }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; background: #f8fafc; color: #64748b; font-size: 0.85rem; text-transform: uppercase; border-bottom: 2px solid var(--border); }
+        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
+        
+        .status-pill { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 11px; text-transform: uppercase; display: inline-block; }
+        .Approved { background: #dcfce7; color: #166534; }
+        .Pending { background: #fef9c3; color: #854d0e; }
+        .Rejected { background: #fee2e2; color: #991b1b; }
+        
+        .quick-toggle { padding: 5px; border-radius: 4px; font-size: 12px; cursor: pointer; border: 1px solid #cbd5e1; }
+        .delete-link { color: var(--red); font-size: 12px; cursor: pointer; margin-left: 15px; text-decoration: underline; }
+        .stats-bar { display: flex; gap: 20px; }
+        .stat-card { background: white; border: 1px solid var(--border); padding: 10px 15px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<!-- SECURITY OVERLAY -->
+<div id="loginOverlay">
+    <div class="login-card">
+        <img src="logo.png" alt="" style="width: 80px; margin-bottom: 20px;">
+        <h3>Admin Access</h3>
+        <p style="color: #64748b; font-size: 13px;">Enter 4-Digit Security PIN</p>
+        <input type="password" id="pinCode" class="pin-input" maxlength="4" placeholder="••••">
+        <button class="btn-action" style="width: 100%;" onclick="verifyPin()">Unlock Dashboard</button>
+        <p id="loginError" style="color: var(--red); font-size: 12px; margin-top: 15px; display: none;">Invalid Security Code</p>
+    </div>
+</div>
+
+<!-- MAIN DASHBOARD -->
+<div id="adminDashboard">
+    <div class="admin-wrapper">
+        <header>
+            <h2>Applicant Management</h2>
+            <div class="stats-bar" id="statsBar"></div>
+        </header>
+        
+        <div class="entry-panel">
+            <input type="text" id="name" placeholder="Candidate Full Name">
+            <input type="text" id="passport" placeholder="Passport Number">
+            <select id="status">
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+            <button class="btn-action" onclick="saveApplicant()">Add Record</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Candidate Name</th>
+                    <th>Passport Number</th>
+                    <th>Status</th>
+                    <th>Management</th>
+                </tr>
+            </thead>
+            <tbody id="applicantTable"></tbody>
+        </table>
+        <button onclick="location.reload()" style="margin-top: 30px; background: none; border: 1px solid #ddd; padding: 8px 15px; border-radius: 4px; cursor: pointer;">Logout & Lock</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+<script>
+  // YOUR SECRET PIN CODE
+  const SECRET_PIN = "2026"; 
+
+  function verifyPin() {
+    const entered = document.getElementById('pinCode').value;
+    const error = document.getElementById('loginError');
+    if(entered === SECRET_PIN) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'block';
+    } else {
+        error.style.display = 'block';
+        document.getElementById('pinCode').value = "";
+    }
+  }
+
+  // FIREBASE CONFIGURATION
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQodpZuUt44p1AYtvo9yqqzQqPYKf1_lI",
+    authDomain: "bright-future-charity.firebaseapp.com",
+    databaseURL: "https://bright-future-charity-default-rtdb.firebaseio.com",
+    projectId: "bright-future-charity",
+    storageBucket: "bright-future-charity.firebasestorage.app",
+    messagingSenderId: "1008624508644",
+    appId: "1:1008624508644:web:41baa1fba084d6b9c6d6f1"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function saveApplicant() {
+    const name = document.getElementById('name').value;
+    const passport = document.getElementById('passport').value.trim();
+    const status = document.getElementById('status').value;
+
+    if(!name || !passport) { alert("Data Incomplete"); return; }
+
+    db.ref('applicants/' + passport).set({
+      name: name,
+      status: status,
+      timestamp: new Date().getTime()
+    }).then(() => {
+      document.getElementById('name').value = "";
+      document.getElementById('passport').value = "";
+      alert("Entry Saved");
+    });
+  }
+
+  function updateStatus(passport, newStatus) {
+    db.ref('applicants/' + passport).update({ status: newStatus });
+  }
+
+  function deleteRecord(passport) {
+    if(confirm("Confirm Deletion?")) {
+      db.ref('applicants/' + passport).remove();
+    }
+  }
+
+  db.ref('applicants').on('value', (snap) => {
+    const tableBody = document.getElementById('applicantTable');
+    const statsBar = document.getElementById('statsBar');
+    tableBody.innerHTML = "";
+    let counts = { Approved: 0, Pending: 0, Rejected: 0 };
+
+    snap.forEach((child) => {
+      const data = child.val();
+      const passport = child.key;
+      counts[data.status]++;
+
+      tableBody.innerHTML += `
+        <tr>
+          <td st
