@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+  function checkPin() {
+    var pin = document.getElementById("pinInput").value;
+    if (pin === "2026") {
+      document.getElementById("loginOverlay").style.display = "none";
+      document.getElementById("adminDashboard").style.display = "block";
+    } else {
+      alert("Invalid PIN. Please try again.");
+    }
+  }
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Access | HR Management</title>
