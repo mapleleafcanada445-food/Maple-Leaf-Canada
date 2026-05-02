@@ -1,18 +1,6 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-  function checkPin() {
-    var pin = document.getElementById("pinInput").value;
-    if (pin === "2026") {
-      document.getElementById("loginOverlay").style.display = "none";
-      document.getElementById("adminDashboard").style.display = "block";
-    } else {
-      alert("Invalid PIN. Please try again.");
-    }
-  }
-</script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Access | HR Management</title>
@@ -173,4 +161,28 @@
 
       tableBody.innerHTML += `
         <tr>
-          <td st
+          <td style="font-weight:600;">${data.name}</td>
+          <td style="color: #64748b;">${passport}</td>
+          <td><span class="status-pill ${data.status}">${data.status}</span></td>
+          <td>
+            <select class="quick-toggle" onchange="updateStatus('${passport}', this.value)">
+                <option value="" disabled selected>Update...</option>
+                <option value="Approved">Approve</option>
+                <option value="Pending">Pending</option>
+                <option value="Rejected">Reject</option>
+            </select>
+            <span class="delete-link" onclick="deleteRecord('${passport}')">Delete</span>
+          </td>
+        </tr>`;
+    });
+
+    statsBar.innerHTML = `
+        <div class="stat-card" style="border-left: 4px solid #166534">Approved: ${counts.Approved}</div>
+        <div class="stat-card" style="border-left: 4px solid #854d0e">Pending: ${counts.Pending}</div>
+        <div class="stat-card" style="border-left: 4px solid #991b1b">Rejected: ${counts.Rejected}</div>
+    `;
+  });
+</script>
+
+</body>
+</html>
